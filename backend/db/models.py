@@ -70,36 +70,3 @@ class QuestionResponse(Base):
     quiz_attempt_id: Mapped[int] = mapped_column(ForeignKey('quiz_attempt.uid'), primary_key=True)
     question_id: Mapped[int] = mapped_column(ForeignKey('question.uid'), primary_key=True)
     response_id: Mapped[int] = mapped_column(ForeignKey('response.uid'), primary_key=True)
-
-# question_response_association = Table(
-#     'question_response', Base.metadata,
-#     mapped_column('quiz_attempt_id', Integer, ForeignKey('quiz_attempt.uid'),
-#            primary_key=True),
-#     mapped_column('question_id', Integer, ForeignKey('question.uid'), primary_key=True),
-#     mapped_column('response', Integer)
-# )
-#
-#
-#
-# user_quiz_attempt_association = Table(
-#     'user_quiz_attempt', Base.metadata,
-#     mapped_column('user_id', Integer, ForeignKey('user.uid'), primary_key=True),
-#     mapped_column('quiz_attempt_id', Integer, ForeignKey('quiz_attempt.uid'),
-#            primary_key=True)
-# )
-#
-# quiz_attempt_subject_association = Table(
-#     'quiz_attempt_subject', Base.metadata,
-#     mapped_column('quiz_attempt_id', Integer, ForeignKey('quiz_attempt.uid'),
-#            primary_key=True),
-#     mapped_column('subject_id', Integer, ForeignKey('subject.uid'), primary_key=True)
-# )
-#
-#
-#
-#
-# user_slot_association = Table(
-#     'user_slot', Base.metadata,
-#     mapped_column('user_id', Integer, ForeignKey('user.uid'), primary_key=True),
-#     mapped_column('slot_id', Integer, ForeignKey('slot.uid'), primary_key=True)
-# )
