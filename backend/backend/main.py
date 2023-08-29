@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+# from backend.database import SessionLocal, User
+# from sqlalchemy.orm import Session
 
 app = FastAPI()
 
@@ -12,6 +14,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import os
+import sys
+
+
+# # Dependency to get the database session
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+#
+# @app.get("/user")
+# def get_user(db: Session = Depends(get_db)):
+#     # Example to fetch the first user
+#     user = db.query(User).first()
+#     if user:
+#         return {"username": user.username}
+#     return {"message": "No users found!"}

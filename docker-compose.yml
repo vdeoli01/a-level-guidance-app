@@ -8,8 +8,6 @@ services:
       - "3000:80"
     depends_on:
       - backend
-    env_file:
-      - ci/local/app.env
 
   backend:
     build: ./backend
@@ -22,9 +20,9 @@ services:
     image: postgres:latest
     container_name: postgres-db-container
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dbname
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test-db
     ports:
       - "5432:5432"
     volumes:
