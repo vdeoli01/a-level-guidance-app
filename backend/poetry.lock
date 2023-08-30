@@ -300,13 +300,13 @@ all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)"
 
 [[package]]
 name = "fastapi-users"
-version = "12.1.1"
+version = "12.1.2"
 description = "Ready-to-use and customizable users management for FastAPI"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "fastapi_users-12.1.1-py3-none-any.whl", hash = "sha256:1118f25284b42955414142bf3ecfc47feb6c5864a4b52cffde4a91f705889c29"},
-    {file = "fastapi_users-12.1.1.tar.gz", hash = "sha256:d3ba4278799a53137c4414725840847874cead4578c42aad721de3e2aae42805"},
+    {file = "fastapi_users-12.1.2-py3-none-any.whl", hash = "sha256:768e3b17b9b89b5f5d3c303afefd69874da0fc97ebac16a86167d4c8d414d479"},
+    {file = "fastapi_users-12.1.2.tar.gz", hash = "sha256:9a9b44e0917c483aaba2bf80ea488b4ba6475b0fb24e2abfaf21e0b5c5db59bf"},
 ]
 
 [package.dependencies]
@@ -321,7 +321,7 @@ python-multipart = "0.0.6"
 [package.extras]
 beanie = ["fastapi-users-db-beanie (>=3.0.0)"]
 oauth = ["httpx-oauth (>=0.13)"]
-redis = ["redis (>=4.3.3,<5.0.0)"]
+redis = ["redis (>=4.3.3,<6.0.0)"]
 sqlalchemy = ["fastapi-users-db-sqlalchemy (>=6.0.0)"]
 
 [[package]]
@@ -928,4 +928,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a744dfac989fbb180a18f9293707dd92eb3bbaffa2e300d70e41301107859b48"
+content-hash = "b4b13496de94fa250b7ec950a042fae0817736b3e8ee09093554d87fadae19bf"

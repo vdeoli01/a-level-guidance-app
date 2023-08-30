@@ -4,9 +4,10 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 from fastapi import Query
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.dependencies import get_db
+from backend.dependencies import get_async_session
 from backend.schemas.models import SlotsBase
 from db.models import Slot
 
@@ -22,20 +23,21 @@ SLOT_LENGTH = timedelta(minutes=30)
 @router.get("/",
             response_model=List[SlotsBase],
             )
-def list_available_meeting_slots(
+async def list_available_meeting_slots(
         start_time: Optional[datetime] = Query(default=None),
         end_time: Optional[datetime] = Query(default=None),
-        db: Session = Depends(get_db)
+        session: AsyncSession = Depends(get_async_session)
 ):
     """Return list of all meeting slots"""
-    query = db.query(Slot)
+    query = select(Slot)
     if start_time is not None:
         query = query.filter(Slot.start_time >= start_time)
     if end_time is not None:
         query = query.filter(Slot.start_time + timedelta <= end_time)
     # Make sure the slot isn't assigned to a user
     query = query.filter(Slot.user_id == None)
-    slots = query.all()
+    result = await session.scalars(query)
+    slots = result.all()
 
     return [
         SlotsBase(
