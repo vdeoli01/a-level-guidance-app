@@ -1,12 +1,25 @@
 from datetime import datetime
 from typing import List, Optional
-
+from fastapi_users import schemas
 from pydantic import BaseModel
+import uuid
+
+from db.models import UserRole
 
 
-class UserBase(BaseModel):
-    username: str
+
+class UserRead(schemas.BaseUser[int]):
     name: str
+    role: UserRole
+
+
+class UserCreate(schemas.BaseUserCreate):
+    name: str
+    role: Optional[UserRole] = UserRole.NORMAL
+
+
+class UserUpdate(schemas.BaseUserUpdate):
+    role: Optional[UserRole]
 
 
 class QuestionResponseBase(BaseModel):

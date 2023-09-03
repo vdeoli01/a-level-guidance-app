@@ -74,7 +74,7 @@ def seed_data():
 
     # Add a slot
     slot1 = Slot(
-        user_id=user1.uid,
+        user_id=user1.id,
         start_time=datetime.today(),
         advisor_name="Dr. Smith"
     )

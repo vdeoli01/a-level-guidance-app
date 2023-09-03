@@ -13,7 +13,7 @@ from backend.dependencies import get_async_session
 from backend.routers.common import check_user_exists
 from backend.routers.meetings import SLOT_LENGTH
 from backend.schemas.models import QuizAttemptBase, QuestionResponseBase, SlotsBase
-from backend.schemas.models import UserBase
+from backend.schemas.models import UserRead
 from db.models import QuizAttempt, Quiz, QuestionResponse, Slot
 from db.models import User
 
@@ -38,24 +38,24 @@ SUBJECTS = [
 ]
 
 
-@router.get("/",
-            response_model=List[UserBase],
-            )
-async def list_user(skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)):
-    """Returns List of all users"""
-    result = await session.scalars(select(User).offset(skip).limit(limit))
-    users = result.all()
-    return [UserBase(**user.__dict__) for user in users]
-
-
-@router.get("/{user_id}", response_model=UserBase)
-async def get_user(user_id: int, session: AsyncSession = Depends(get_async_session)):
-    """Returns a single user"""
-    result = await session.scalars(select(User).filter(User.uid == user_id))
-    user = result.first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return UserBase(**user.__dict__)
+# @router.get("/",
+#             response_model=List[UserRead],
+#             )
+# async def list_user(skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)):
+#     """Returns List of all users"""
+#     result = await session.scalars(select(User).offset(skip).limit(limit))
+#     users = result.all()
+#     return [UserRead(**user.__dict__) for user in users]
+#
+#
+# @router.get("/{user_id}", response_model=UserRead)
+# async def get_user(user_id: int, session: AsyncSession = Depends(get_async_session)):
+#     """Returns a single user"""
+#     result = await session.scalars(select(User).filter(User.id == user_id))
+#     user = result.first()
+#     if user is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+#     return UserRead(**user.__dict__)
 
 
 @router.get("/{user_id}/quiz_attempts/{quiz_attempt_id}",
