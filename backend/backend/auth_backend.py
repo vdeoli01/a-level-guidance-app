@@ -1,11 +1,11 @@
 import uuid
 from typing import Optional
 
-from fastapi import Request
+from fastapi import Request, Depends
 from fastapi_users import BaseUserManager, IntegerIDMixin, FastAPIUsers
 from fastapi_users.authentication import AuthenticationBackend, JWTStrategy, CookieTransport
 
-from backend.dependencies import get_user_manager
+from backend.dependencies import get_user_db
 from db.models import User
 
 SECRET = "GENERIC_SECRET"
@@ -27,6 +27,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, uuid.UUID]):
             self, user: User, token: str, request: Optional[Request] = None
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+
+
+async def get_user_manager(user_db=Depends(get_user_db)):
+    yield UserManager(user_db)
 
 
 cookie_transport = CookieTransport(cookie_max_age=3600)

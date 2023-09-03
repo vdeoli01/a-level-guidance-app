@@ -6,7 +6,6 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship, Session
 from typing import List, Optional
 from datetime import datetime
 from sqlalchemy.orm import DeclarativeBase
-from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 
 class Base(DeclarativeBase):
     pass
