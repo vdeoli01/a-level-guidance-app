@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, Query, Body, Path
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from backend.dependencies import get_async_session
 from backend.routers.common import check_user_exists
@@ -69,7 +70,7 @@ async def get_quiz_attempt(
     await check_user_exists(user_id, session)
 
     # Check if quiz attempt exists
-    result = await session.scalars(select(QuizAttempt).filter(QuizAttempt.uid == quiz_attempt_id))
+    result = await session.scalars(select(QuizAttempt).options(joinedload(QuizAttempt.question_responses)).filter(QuizAttempt.uid == quiz_attempt_id))
     quiz_attempt = result.first()
     if quiz_attempt is None:
         raise HTTPException(status_code=404, detail="Quiz attempt not found")
@@ -83,7 +84,7 @@ async def get_quiz_attempt(
         user_id=quiz_attempt.user_id,
         quiz_id=quiz_attempt.quiz_id,
         end_time=quiz_attempt.end_time,
-        question_responses=quiz_attempt.question_responses,
+        question_responses=[QuestionResponseBase(**qr.__dict__) for qr in quiz_attempt.question_responses],
         subjects=json.loads(quiz_attempt.subjects),
     )
 
