@@ -32,24 +32,43 @@ class ResultsBase(BaseModel):
     """Stores a users results to a quiz"""
     subjects: List[str]
 
-
 class SlotsBase(BaseModel):
     """Stores all possible slots and users associated"""
     start_time: datetime
-    end_time: datetime
     advisor_name: str
     user_id: Optional[int] = None
 
+class SlotsRead(SlotsBase):
+    """Stores all possible slots and users associated"""
+    slot_id: int
+    end_time: datetime
+
+class SlotsCreate(SlotsBase):
+    """Stores all possible slots and users associated"""
 
 class QuestionBase(BaseModel):
     """Stores a quiz question"""
-    question_id: int
     question: str
 
+class QuestionRead(QuestionBase):
+    """Stores a quiz question"""
+    question_id: int
+
+class QuestionCreate(QuestionBase):
+    """Stores a quiz question"""
 
 class QuizBase(BaseModel):
     """Stores the quiz questions"""
+
+
+class QuizRead(QuizBase):
+    """Stores the quiz questions"""
     quiz_id: int
+    questions: Optional[List[QuestionRead]] = None
+
+class QuizCreate(QuizBase):
+    """Stores the quiz questions"""
+    questions: List[QuestionCreate]
 
 
 class QuizAttemptBase(BaseModel):

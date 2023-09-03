@@ -16,6 +16,8 @@ def seed_data():
     hashed = bcrypt.hashpw(password, salt)
 
     user1 = User(
+        email="johndoe@email.com",
+        hashed_password=hashed,
         username="JohnDoe",
         name="John Doe Jr",
         password_hash=hashed,
