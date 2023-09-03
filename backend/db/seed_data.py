@@ -16,6 +16,8 @@ def seed_data():
     hashed = bcrypt.hashpw(password, salt)
 
     user1 = User(
+        email="johndoe@email.com",
+        hashed_password=hashed,
         username="JohnDoe",
         name="John Doe Jr",
         password_hash=hashed,
@@ -74,7 +76,7 @@ def seed_data():
 
     # Add a slot
     slot1 = Slot(
-        user_id=user1.uid,
+        user_id=user1.id,
         start_time=datetime.today(),
         advisor_name="Dr. Smith"
     )
