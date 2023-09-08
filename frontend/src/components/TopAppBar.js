@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BASE_API_ENDPOINT } from '../config';
 import Logout from './Logout';
 import HomeButton from './HomeButton';
+import ProfileButton from './ProfileButton';
 
 function TopAppBar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,7 +38,9 @@ function TopAppBar() {
                         <Typography variant="subtitle1" style={{ marginRight: '20px' }}>
                             Logged in
                         </Typography>
+                        <ProfileButton style={{marginRight:"10px"}}/>
                         <Logout />
+
                     </>
                 )}
             </Toolbar>
