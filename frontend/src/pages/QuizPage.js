@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Typography, Radio, RadioGroup, FormControlLabel, FormControl } from '@mui/material';
+import React, {useState} from 'react';
+import {Button, Container, FormControl, FormControlLabel, Radio, RadioGroup, Typography} from '@mui/material';
 import axios from 'axios';
-import { BASE_API_ENDPOINT } from '../config';
-import { useNavigate } from 'react-router-dom';
+import {BASE_API_ENDPOINT} from '../config';
+import {useNavigate} from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
+import TopAppBar from "../components/TopAppBar";
 
 function QuizPage() {
     const [quizId, setQuizId] = useState(null);
@@ -14,9 +15,9 @@ function QuizPage() {
     const history = useNavigate();
 
     const startQuiz = async () => {
-        setError(null)
+        setError(null);
         try {
-            const { data } = await axios.get(`${BASE_API_ENDPOINT}/quizzes/?skip=0&limit=1`);
+            const {data} = await axios.get(`${BASE_API_ENDPOINT}/quizzes/?skip=0&limit=1`);
             const latestQuizId = data[0].quiz_id;
             setQuizId(latestQuizId);
 
@@ -25,25 +26,23 @@ function QuizPage() {
             setStarted(true);
         } catch (error) {
             setError(error.message || 'An error occurred while fetching quiz data');
-            console.error('Error fetching quiz data', error);
         }
     };
 
     const handleSubmit = async () => {
-        setError(null)
+        setError(null);
         try {
             const questionResponses = Object.keys(responses).map(key => ({
                 question_id: parseInt(key),
                 response_id: responses[key]
             }));
-            const { data } = await axios.post(`${BASE_API_ENDPOINT}/users/me/quiz_attempts`, {
+            const {data} = await axios.post(`${BASE_API_ENDPOINT}/users/me/quiz_attempts`, {
                 quiz_id: quizId,
                 question_responses: questionResponses
             });
-            history('/results', { state: { subjects: data.subjects } });
+            history('/results', {state: {subjects: data.subjects}});
         } catch (error) {
             setError(error.message || 'An error occurred while submitting quiz responses');
-            console.error('Error submitting quiz responses', error);
         }
     };
 
@@ -54,30 +53,49 @@ function QuizPage() {
         }));
     };
 
+    const resetForm = () => {
+        setResponses({});
+        setError(null);
+    };
+
     return (
-        <div style={{ padding: '20px' }}>
-            {!started ? (
-                <Button variant="contained" color="primary" onClick={startQuiz}>Start Quiz</Button>
-            ) : (
-                <div>
-                    <Typography variant="h6" gutterBottom>
-                        Please answer the questions on a scale of 1 (Strongly Agree) to 5 (Strongly Disagree)
-                    </Typography>
-                    {questions.map(question => (
-                        <FormControl component="fieldset" key={question.question_id}>
-                            <Typography variant="subtitle1" gutterBottom>{question.question}</Typography>
-                            <RadioGroup row onChange={(e) => handleChange(question.question_id, parseInt(e.target.value))}>
-                                {[1, 2, 3, 4, 5].map(val => (
-                                    <FormControlLabel key={val} value={val} control={<Radio />} label={val} />
-                                ))}
-                            </RadioGroup>
-                        </FormControl>
-                    ))}
-                    <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
-                </div>
-            )}
-            {error && <ErrorMessage message={error} />}
-        </div>
+        <>
+            <TopAppBar/>
+            <Container component="main" maxWidth="xs" style={{marginTop: '8%', textAlign: 'center'}}>
+                {!started ? (
+                    <Button variant="contained" color="primary" onClick={startQuiz}
+                            style={{fontSize: 'large', padding: '10px 20px'}}>Start Quiz</Button>
+                ) : (
+                    <div>
+                        <Typography variant="h4" gutterBottom style={{marginBottom: '20px'}}>
+                            Quiz Time!
+                        </Typography>
+                        <Typography variant="h6" gutterBottom>
+                            Please answer the questions on a scale of 1 (Strongly Agree) to 5 (Strongly Disagree)
+                        </Typography>
+                        {questions.map(question => (
+                            <FormControl component="fieldset" key={question.question_id} style={{marginBottom: '20px'}}>
+                                <Typography variant="subtitle1" gutterBottom>{question.question}</Typography>
+                                <RadioGroup row
+                                            onChange={(e) => handleChange(question.question_id, parseInt(e.target.value))}>
+                                    {[1, 2, 3, 4, 5].map(val => (
+                                        <FormControlLabel key={val} value={val} control={<Radio/>} label={val}/>
+                                    ))}
+                                </RadioGroup>
+                            </FormControl>
+                        ))}
+                        <br/>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                            <Button variant="contained" onClick={resetForm}
+                                    style={{backgroundColor: '#f0ad4e', marginTop: '20px'}}>Reset</Button>
+                            <Button variant="contained" color="primary" onClick={handleSubmit}
+                                    style={{marginTop: '20px'}}>Submit</Button>
+                        </div>
+                    </div>
+                )}
+                {error && <ErrorMessage message={error} style={{marginTop: '20px'}}/>}
+            </Container>
+        </>
     );
 }
 
