@@ -5,6 +5,7 @@ import {BASE_API_ENDPOINT} from '../config';
 import {useNavigate} from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 import TopAppBar from "../components/TopAppBar";
+import ResponseMapBar from "../components/ResponseMapBar";
 
 function QuizPage() {
     const [quizId, setQuizId] = useState(null);
@@ -71,8 +72,9 @@ function QuizPage() {
                             Quiz Time!
                         </Typography>
                         <Typography variant="h6" gutterBottom>
-                            Please answer the questions on a scale of 1 (Strongly Agree) to 5 (Strongly Disagree)
+                            Please answer the questions on using the scale below:
                         </Typography>
+                        <ResponseMapBar/>
                         {questions.map(question => (
                             <FormControl component="fieldset" key={question.question_id} style={{marginBottom: '20px'}}>
                                 <Typography variant="subtitle1" gutterBottom>{question.question}</Typography>
