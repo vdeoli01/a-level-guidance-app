@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import QuizPage from "./pages/QuizPage";
 
-const BASE_API_ENDPOINT = process.env.REACT_APP_BASE_API_ENDPOINT;
 function App() {
     return (
         <Router>
