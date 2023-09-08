@@ -4,14 +4,17 @@ import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Container
 import axios from "axios";
 import { BASE_API_ENDPOINT } from "../config";
 import HomeButton from "../components/HomeButton";
+import ErrorMessage from "../components/ErrorMessage";
 
 function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [role, setRole] = useState("normal");
+    const [error, setError] = useState(null);
 
     const handleRegister = async () => {
+        setError(null);
         try {
             const response = await axios.post(`${BASE_API_ENDPOINT}/auth/register`, {
                 email,
@@ -29,6 +32,7 @@ function RegisterPage() {
             console.log(response.data);
             // Add your handling logic here e.g. redirecting to another page
         } catch (error) {
+            setError(error.message);
             console.error(error);
             // Handle error accordingly
         }
@@ -51,6 +55,7 @@ function RegisterPage() {
                 </FormControl>
                 <Button variant="contained" color="primary" onClick={handleRegister}>Register</Button>
             </div>
+            {error && <ErrorMessage message={error} style={{ marginTop: '20px' }} />}
         </Container>
     );
 }
