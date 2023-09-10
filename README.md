@@ -5,13 +5,17 @@ A-Level-Guidance-App aids GCSE students in the UK with A-level choices. Using an
 
 This project uses docker-compose to run the frontend, backend and database in separate containers. 
 To run the project, you will need to install docker and docker-compose.
-Once you have installed docker and docker-compose, you can run the project by running the following command in the root directory of the project:
+Once you have installed docker and docker-compose, the first step is to build the project by running the command in the root directory of the project:
 
 ```bash
-docker-compose --build up
+docker-compose build
 ```
 
-Adding the `--build` flag will ensure that the latest version of the containers are built before running them.
+Once the project is built succesfully, you can run the project by running the following command:
+
+```bash
+docker-compose up
+```
 
 To run specific containers, you can use the following commands:
 
@@ -29,10 +33,6 @@ To stop the containers, you can use `ctrl +c` or if you ran the containers silen
 ```bash
 docker-compose down
 ```
-
-Here's images of the app running:
-
-- Front end on localhost:3000
 
 ## Example Images
 
