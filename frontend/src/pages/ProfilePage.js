@@ -4,6 +4,7 @@ import {Accordion, AccordionDetails, AccordionSummary, Button, Container, Typogr
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TopAppBar from "../components/TopAppBar";
 import {RESPONSE_MAPPINGS} from '../utilities/responseMapping';
+import {withAuthProtection} from "../components/withAuthProtection";
 
 function ProfilePage() {
     const [bookedSlots, setBookedSlots] = useState([]);
@@ -170,4 +171,4 @@ function ProfilePage() {
     );
 }
 
-export default ProfilePage;
+export default withAuthProtection(ProfilePage);

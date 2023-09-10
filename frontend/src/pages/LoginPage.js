@@ -37,7 +37,6 @@ function LoginPage() {
         <>
             <TopAppBar />
             <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
-                <HomeButton />
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#f7f7f7', padding: '20px', borderRadius: '10px' }}>
                     <h1>Login</h1>
                     <TextField label="Email" variant="outlined" margin="normal" fullWidth onChange={e => setEmail(e.target.value)} />

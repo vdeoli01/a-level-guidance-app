@@ -36,6 +36,11 @@ docker-compose down
 
 ## Example Images
 
+### Frontend
 - ![Frontend: React App](./images/frontend.png)
+
+### Backend
 - ![Backend: FastApi Swagger Docs](./images/backend.png)
+
+### Database
 - ![Database: Postgres using PGAdmin4](./images/database.png)

@@ -5,25 +5,13 @@ import { BASE_API_ENDPOINT } from '../config';
 import Logout from './Logout';
 import HomeButton from './HomeButton';
 import ProfileButton from './ProfileButton';
+import {checkLoginStatus} from "../utilities/checkLoginStatus";
 
 function TopAppBar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const checkLoginStatus = async () => {
-            try {
-                const response = await axios.get(`${BASE_API_ENDPOINT}/authenticated-route`, {
-                    withCredentials: true
-                });
-                if(response.status === 200) {
-                    setIsLoggedIn(true);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        checkLoginStatus();
+        checkLoginStatus(setIsLoggedIn)
     }, []);
 
     return (

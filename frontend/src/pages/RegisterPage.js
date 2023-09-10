@@ -5,6 +5,8 @@ import axios from "axios";
 import { BASE_API_ENDPOINT } from "../config";
 import HomeButton from "../components/HomeButton";
 import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
+import TopAppBar from "../components/TopAppBar";
 
 function RegisterPage() {
     const [email, setEmail] = useState("");
@@ -12,9 +14,11 @@ function RegisterPage() {
     const [name, setName] = useState("");
     const [role, setRole] = useState("normal");
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const handleRegister = async () => {
         setError(null);
+        setSuccess(null);
         try {
             const response = await axios.post(`${BASE_API_ENDPOINT}/auth/register`, {
                 email,
@@ -30,33 +34,38 @@ function RegisterPage() {
                 }
             });
             console.log(response.data);
-            // Add your handling logic here e.g. redirecting to another page
+            if(response.status === 201) {
+                setSuccess('Registration successful!, Please login to continue');
+            }
         } catch (error) {
             setError(error.message);
             console.error(error);
-            // Handle error accordingly
         }
     };
 
     return (
-        <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
-            <HomeButton />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#f7f7f7', padding: '20px', borderRadius: '10px' }}>
-                <h1>Register</h1>
-                <TextField label="Name" variant="outlined" margin="normal" fullWidth onChange={e => setName(e.target.value)} />
-                <TextField label="Email" variant="outlined" margin="normal" fullWidth onChange={e => setEmail(e.target.value)} />
-                <TextField label="Password" variant="outlined" margin="normal" fullWidth type="password" onChange={e => setPassword(e.target.value)} />
-                <FormControl variant="outlined" margin="normal" fullWidth>
-                    <InputLabel>Role</InputLabel>
-                    <Select value={role} label="Role" onChange={e => setRole(e.target.value === "Student" ? "normal" : "advisor")}>
-                        <MenuItem value="normal">Student</MenuItem>
-                        <MenuItem value="advisor">Advisor</MenuItem>
-                    </Select>
-                </FormControl>
-                <Button variant="contained" color="primary" onClick={handleRegister}>Register</Button>
-            </div>
-            {error && <ErrorMessage message={error} style={{ marginTop: '20px' }} />}
-        </Container>
+        <>
+            <TopAppBar />
+            <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#f7f7f7', padding: '20px', borderRadius: '10px' }}>
+                    <h1>Register</h1>
+                    <TextField label="Name" variant="outlined" margin="normal" fullWidth onChange={e => setName(e.target.value)} />
+                    <TextField label="Email" variant="outlined" margin="normal" fullWidth onChange={e => setEmail(e.target.value)} />
+                    <TextField label="Password" variant="outlined" margin="normal" fullWidth type="password" onChange={e => setPassword(e.target.value)} />
+                    <FormControl variant="outlined" margin="normal" fullWidth>
+                        <InputLabel>Role</InputLabel>
+                        <Select value={role} label="Role" onChange={e => setRole(e.target.value === "Student" ? "normal" : "advisor")}>
+                            <MenuItem value="normal">Student</MenuItem>
+                            <MenuItem value="advisor">Advisor</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Button variant="contained" color="primary" onClick={handleRegister}>Register</Button>
+                </div>
+                {error && <ErrorMessage message={error} style={{ marginTop: '20px' }} />}
+                {success && <SuccessMessage message={success} />} {/* Display the success message when present */}
+            </Container>
+        </>
+
     );
 }
 
