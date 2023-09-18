@@ -12,6 +12,7 @@ from sqlalchemy.orm import joinedload
 from backend.auth_backend import current_active_user
 from backend.dependencies import get_async_session
 from backend.routers.meetings import SLOT_LENGTH
+from backend.routers.users.calculate_quiz_attempts import SUBJECTS, calculate_quiz_attempts
 from backend.schemas.models import QuizAttemptBase, QuestionResponseBase, SlotsRead
 from db.models import QuizAttempt, Quiz, QuestionResponse, Slot
 from db.models import User
@@ -21,20 +22,6 @@ router = APIRouter(
     tags=["Users"],
     responses={404: {"description": "Not found"}},
 )
-
-SUBJECTS = [
-    "Maths",
-    "English",
-    "Science",
-    "History",
-    "Geography",
-    "Art",
-    "Music",
-    "PE",
-    "RE",
-    "PSHE",
-    "Computing",
-]
 
 
 @router.get("/me/quiz_attempts/{quiz_attempt_id}",
@@ -90,7 +77,6 @@ async def list_quiz_attempts(
     result = await session.scalars(query)
     quiz_attempts = result.unique().all()
 
-
     return [
         QuizAttemptBase(
             quiz_attempt_id=quiz_attempt.uid,
@@ -120,8 +106,7 @@ async def calculate_quiz_attempt_results(
     if quiz is None:
         raise HTTPException(status_code=404, detail="Quiz not found")
 
-    # TODO implement the algorithm to calculate the results
-    subjects = sample(SUBJECTS, 6)
+    subjects = calculate_quiz_attempts(quiz_id, question_responses)
 
     # Insert Quiz Attempt and Question Responses into DB
     quiz_attempt = QuizAttempt(
@@ -130,7 +115,6 @@ async def calculate_quiz_attempt_results(
         end_time=datetime.now(),
         subjects=json.dumps(subjects),
     )
-
     session.add(quiz_attempt)
     quiz_attempt.question_responses.extend(
         [
@@ -211,11 +195,13 @@ async def book_slot(
         user_id=slot.user_id,
     )
 
+
+def __convert_question_responses(question_responses: List[QuestionResponse]) -> List[QuestionResponseBase]:
+    return [__convert_question_response(qr) for qr in question_responses]
+
+
 def __convert_question_response(question_response: QuestionResponse) -> QuestionResponseBase:
     return QuestionResponseBase(
         question_id=question_response.question_id,
         response_id=question_response.response_id
     )
-
-def __convert_question_responses(question_responses: List[QuestionResponse]) -> List[QuestionResponseBase]:
-    return [__convert_question_response(qr) for qr in question_responses]
