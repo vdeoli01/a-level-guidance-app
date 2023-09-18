@@ -94,12 +94,17 @@ function ProfilePage() {
     return (
         <>
             <TopAppBar/>
-            <Container component="main" maxWidth="xs" style={{marginTop: '8%', textAlign: 'center'}}>
+            <Container component="main" maxWidth="md" style={{marginTop: '8%', textAlign: 'center'}}>
                 <Typography variant="h2" gutterBottom style={{ marginBottom: '20px'}}>
                     Profile
                 </Typography>
                 <div style={{margin: '20px 0'}}>
                     <Typography variant="h5">Your Booked Sessions</Typography>
+                    <p>
+                        View and manage your upcoming one-to-one counselling sessions with our academic counsellors.
+                        Our advisors are trained to discuss you’re A-level matching tool results, provide personalized
+                        guidance, and set you on the path to academic success.
+                    </p>
                     {bookedSlots.map((slot) => (
                         <Accordion key={slot.slot_id}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
